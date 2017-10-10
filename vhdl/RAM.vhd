@@ -14,61 +14,46 @@ entity RAM is
 end RAM;
 
 architecture synth of RAM is
-
-	signal s_read: std_logic := '0';
-	signal s_cs : std_logic := '0';
-	signal s_address : std_logic_vector(9 downto 0);
-
-	type ram_type is array(0 to 1023) of std_logic_vector(31 downto 0);
-	signal ram : ram_type := (others => (others => '0'));
+	type RAM_type is array (0 to 1023) of std_logic_vector(31 downto 0);
+	signal RAM_mem : RAM_type := (others =>(others => '0'));
+	signal s_cs, s_read : std_logic := '0';
+	signal s_address : std_logic_vector(9 downto 0) := (others => '0');
 
 begin
-
-p_write : process( clk )
-begin
-
-	if rising_edge(clk) then
-		if (cs = '1' and write = '1') then
-			ram(to_integer(unsigned(address))) <= wrdata;		
-		end if ;
-	end if ;
 	
-end process ; -- p_write
+	read_proc : process( clk )
+		begin
+			if(rising_edge(clk)) then
+				if(s_cs = '1'and s_read = '1') then 
+					rddata <= RAM_mem(to_integer(unsigned(s_address)));
+				else
+					rddata <= (others => 'Z');
+				end if;	
 
-p_read : process( clk )
-begin
+				
+				
+			end if;
 
+			s_read <= read;
+			s_address <= address;
+			s_cs <= cs;
 
-
-	if rising_edge(clk) then
-
-		if (s_read = '1' and s_cs = '1') then
-			rddata <= ram(to_integer(unsigned(s_address)));
-			else
-				rddata <= (others => 'Z');
-		end if ;
-
-
-
-
-	end if ;
-
-	s_read <= read;
-	s_cs <= cs;
-	s_address <= address;
-
-	
-end process ; -- read
+			
+			
+			
+		end process ; -- read_proc	
 
 
 
+	write_proc : process( clk )
+	begin
+		if(rising_edge(clk)) then
+			if(cs = '1' and write = '1') then
+				RAM_mem(to_integer(unsigned(address))) <= wrdata;
+			end if;
+		end if;
 
-
-
-
-
-
-
-
+		
+	end process ; -- write_proc
 
 end synth;

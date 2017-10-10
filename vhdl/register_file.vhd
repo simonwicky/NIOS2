@@ -17,31 +17,23 @@ end register_file;
 
 architecture synth of register_file is
 
-type reg_type is array(0 to 31) of std_logic_vector(31 downto 0);
-signal reg : reg_type := (others => (others => '0'));
+    type reg_type is array (0 to 31) of std_logic_vector(31 downto 0);
+    signal reg : reg_type := (others => (others => '0'));
+    constant c_zero : std_logic_vector (31 downto 0) := (others => '0');
+
 
 begin
 
-read : process( aa, ab,reg )
-begin
-
-a <= reg(to_integer(unsigned(aa)));
-b <= reg(to_integer(unsigned(ab)));
+    a <= reg(to_integer(unsigned(aa)));
+    b <= reg(to_integer(unsigned(ab)));
     
-end process ; -- read
+    write : process( clk )
+    begin
+        if(rising_edge(clk) and (wren = '1')) then
+            reg(to_integer(unsigned(aw))) <= wrdata;
+            reg(0) <= c_zero;
+        end if;
 
-write : process( clk )
-begin
-
-if rising_edge(clk) then
-    if wren = '1' then
-        reg(to_integer(unsigned(aw))) <= wrdata;
-        reg(0) <= (others => '0');
-    end if ;
-end if ;
-
-    
-end process ; -- write
-
+    end process ; -- read_write
 
 end synth;

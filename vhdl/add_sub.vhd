@@ -3,49 +3,53 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 entity add_sub is
-  port(
-    a        : in  std_logic_vector(31 downto 0);
-    b        : in  std_logic_vector(31 downto 0);
-    sub_mode : in  std_logic;
-    carry    : out std_logic;
-    zero     : out std_logic;
-    r        : out std_logic_vector(31 downto 0)
+    port(
+        a        : in  std_logic_vector(31 downto 0);
+        b        : in  std_logic_vector(31 downto 0);
+        sub_mode : in  std_logic;
+        carry    : out std_logic;
+        zero     : out std_logic;
+        r        : out std_logic_vector(31 downto 0)
     );
 end add_sub;
 
 architecture synth of add_sub is
-  
-  --signal nb_a   : signed(31 downto 0);
-  --signal nb_b   : signed(31 downto 0);
-  --signal nb_r   : signed(31 downto 0) := (others => '1');
-  signal result : std_logic_vector(32 downto 0) := X"00000000" & '0';
+
+	signal s_b_33 : std_logic_vector(32 downto 0);
+	signal s_a_33 : std_logic_vector(32 downto 0);
+	signal zero_VAL : std_logic_vector(32 downto 0);
+	signal sub_mode_vec_val : std_logic_vector(32 downto 0);
+	
+	
+	signal s_sub_mode_vec : std_logic_vector(31 downto 0);
+	signal s_r : std_logic_vector(32 downto 0);
 
 begin
 
-  adder : process(a,b,sub_mode)
-  begin
+	zero_VAL <= (others => '0');
 
-    if sub_mode = '0' then
-      result <= std_logic_vector(('0' & signed(a)) + ('0' & signed(b)));
-    else
-      result <= std_logic_vector(('0' & signed(a)) - ('1' & signed(b))); -- the first 1 is inverted by the - to become a zero
-    end if;
+	s_sub_mode_vec <= (others => sub_mode);
+	sub_mode_vec_val <= (32 downto 1 => '0') & sub_mode;
+	
 
+	r <= s_r(31 downto 0);
 
-    if result = (X"00000000" & '0') then
-      zero <= '1';
-    else
-      zero <= '0';
-    end if;
+	carry <= s_r(32);
 
 
+	s_b_33 <= '0' & (b xor s_sub_mode_vec);
+	s_a_33 <= '0' & a;
 
 
-  end process;  -- adder
-    carry  <= result(32);
-    r      <= result(31 downto 0);
+	s_r <= std_logic_vector(signed(s_a_33) + signed(s_b_33) + signed(sub_mode_vec_val));
+	
+	
+
+	zero <= '1' when s_r = zero_VAL else '0';
 
 
+
+	
 
 
 end synth;

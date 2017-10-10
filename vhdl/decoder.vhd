@@ -1,5 +1,6 @@
 library ieee;
 use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
 
 entity decoder is
     port(
@@ -11,34 +12,44 @@ entity decoder is
 end decoder;
 
 architecture synth of decoder is
-begin
+	constant b1 : std_logic_vector := X"0000";
+	constant b2 : std_logic_vector := X"0FFC";
+	constant b3 : std_logic_vector := X"1000";
+	constant b4 : std_logic_vector := X"1FFC";
+	constant b5 : std_logic_vector := X"2000";
+	constant b6 : std_logic_vector := X"200C";
 
-mx : process( address )
+
 begin
-	if ((address >= X"0000") and (X"0FFC" >= address)) then
-		cs_ROM <= '1';
-		cs_RAM <= '0';
-		cs_LEDS <= '0';
-		else if ((address >= X"1000") and (X"1FFC" >= address)) then
-			cs_ROM <= '0';
-			cs_RAM <= '1';
-			cs_LEDS <= '0';
-			else if ((address >= X"2000") and (X"200C" >= address)) then
-				cs_ROM <= '0';
-				cs_RAM <= '0';
-				cs_LEDS <= '1';
-				else
-					cs_ROM <= '0';
-					cs_RAM <= '0';
-					cs_LEDS <= '0';
-			end if ;
-		end if;
+	
+	decode : process( address )
+	begin
+		
+		if(( unsigned(address) >= unsigned(b1) ) and ( unsigned(address) <= unsigned(b2) ))  then
 			
-	end if ;
+			cs_RAM <= '0';
+			cs_LEDS <= '0';
+			cs_ROM <= '1';
 
+			
+		elsif((unsigned(address) >= unsigned(b3)) and (unsigned(address) <= unsigned(b4))) then
+			cs_ROM <= '0';
+			cs_LEDS <= '0';
+			cs_RAM <= '1';
 
+		elsif((unsigned(address) >= unsigned(b5)) and (unsigned(address) <= unsigned(b6))) then
+			cs_RAM <= '0';
+			cs_ROM <= '0';
+			cs_LEDS <= '1';
+		else
+			cs_RAM <= '0';
+			cs_ROM <= '0';
+			cs_LEDS <= '0';
 
-end process ; -- mx
+		end if;
 
+	end process ; -- decode
+	
+	
 
 end synth;
