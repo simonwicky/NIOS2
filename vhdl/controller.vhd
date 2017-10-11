@@ -173,27 +173,30 @@ begin
 
   R_OP_process : process(current_state)
   begin
+    if (current_state = R_OP) then
+      
+      branch_op  <= '0';
+      imm_signed <= '0';
+      ir_en      <= '0';
 
-    branch_op  <= '0';
-    imm_signed <= '0';
-    ir_en      <= '0';
+      pc_add_imm <= '0';
+      pc_en      <= '0';
+      pc_sel_a   <= '0';
+      pc_sel_imm <= '0';
 
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
+      rf_wren <= '1';
 
-    rf_wren <= '1';
+      sel_addr <= '0';
+      sel_b    <= '1';
+      sel_mem  <= '0';
+      sel_pc   <= '0';
+      sel_ra   <= '0';
+      sel_rC   <= '1';
 
-    sel_addr <= '0';
-    sel_b    <= '1';
-    sel_mem  <= '0';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '1';
+      read  <= '0';
+      write <= '0';
 
-    read  <= '0';
-    write <= '0';
+    end if;
 
     
   end process;  -- R_OP_process
@@ -414,7 +417,7 @@ begin
 
   change_state : process(clk, reset_n)
   begin
-    if (reset_n = '1') then
+    if (reset_n = '0') then
       current_state <= FETCH1;
 
     elsif (rising_edge(clk)) then
