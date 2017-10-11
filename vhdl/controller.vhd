@@ -189,27 +189,29 @@ begin
 
   I_OP_process : process(current_state)
   begin
+    if (current_state = I_OP) then
+      
+      branch_op  <= '0';
+      imm_signed <= '1';
+      ir_en      <= '0';
 
-    branch_op  <= '0';
-    imm_signed <= '1';
-    ir_en      <= '0';
+      pc_add_imm <= '0';
+      pc_en      <= '0';
+      pc_sel_a   <= '0';
+      pc_sel_imm <= '0';
 
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
+      rf_wren <= '1';
 
-    rf_wren <= '1';
+      sel_addr <= '0';
+      sel_b    <= '0';
+      sel_mem  <= '0';
+      sel_pc   <= '0';
+      sel_ra   <= '0';
+      sel_rC   <= '0';
 
-    sel_addr <= '0';
-    sel_b    <= '0';
-    sel_mem  <= '0';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '0';
-
-    read  <= '0';
-    write <= '0';
+      read  <= '0';
+      write <= '0';
+    end if;
 
     
   end process;  -- I_OP_process
@@ -217,32 +219,39 @@ begin
   STORE_process : process(current_state)
   begin
 
-    branch_op  <= '0';
-    imm_signed <= '1';
-    ir_en      <= '0';
+    if (current_state = STORE) then
 
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
+      branch_op  <= '0';
+      imm_signed <= '1';
+      ir_en      <= '0';
 
-    rf_wren <= '1';
+      pc_add_imm <= '0';
+      pc_en      <= '0';
+      pc_sel_a   <= '0';
+      pc_sel_imm <= '0';
 
-    sel_addr <= '1';
-    sel_b    <= '0';
-    sel_mem  <= '0';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '0';
+      rf_wren <= '1';
 
-    read  <= '0';
-    write <= '1';
+      sel_addr <= '1';
+      sel_b    <= '0';
+      sel_mem  <= '0';
+      sel_pc   <= '0';
+      sel_ra   <= '0';
+      sel_rC   <= '0';
+
+      read  <= '0';
+      write <= '1';
+
+    end if;
 
     
   end process;  -- STORE_process
 
   LOAD1_process : process(current_state)
   begin
+
+  if (current_state = LOAD1) then
+
 
     branch_op  <= '0';
     imm_signed <= '0';
@@ -265,11 +274,16 @@ begin
     read  <= '1';
     write <= '0';
 
+  end if;
+
     
   end process;  -- LOAD1_process
 
   LOAD2_process : process(current_state)
   begin
+
+  if (current_state = LOAD2) then
+    
 
     branch_op  <= '0';
     imm_signed <= '1';
@@ -292,11 +306,16 @@ begin
     read  <= '1';
     write <= '0';
 
+  end if;
+
     
   end process;  -- LOAD2_process
 
   BREAK_process : process(current_state)
   begin
+
+  if (current_state = BREAK) then
+
 
     branch_op  <= '0';
     imm_signed <= '0';
@@ -318,6 +337,8 @@ begin
 
     read  <= '0';
     write <= '0';
+
+  end if;
 
     
   end process;  -- BREAK_process
