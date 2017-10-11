@@ -109,7 +109,7 @@ begin
     
   end process;  -- fetch1_proc
 
-fetch2_proc : process(current_state)
+  fetch2_proc : process(current_state)
   begin
     branch_op  <= '0';
     imm_signed <= '0';
@@ -134,7 +134,7 @@ fetch2_proc : process(current_state)
     
   end process;  -- fetch2_proc
 
-decode_proc : process(current_state)
+  decode_proc : process(current_state)
   begin
     branch_op  <= '0';
     imm_signed <= '0';
@@ -160,8 +160,8 @@ decode_proc : process(current_state)
   end process;  -- decode_proc
 
 
-R_OP_process : process( current_state )
-begin
+  R_OP_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '0';
@@ -184,11 +184,11 @@ begin
     read  <= '0';
     write <= '0';
 
-  
-end process ; -- R_OP_process
+    
+  end process;  -- R_OP_process
 
-I_OP_process : process( current_state )
-begin
+  I_OP_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '1';
@@ -211,11 +211,11 @@ begin
     read  <= '0';
     write <= '0';
 
-  
-end process ; -- I_OP_process
+    
+  end process;  -- I_OP_process
 
-STORE_process : process( current_state )
-begin
+  STORE_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '1';
@@ -238,11 +238,11 @@ begin
     read  <= '0';
     write <= '1';
 
-  
-end process ; -- STORE_process
+    
+  end process;  -- STORE_process
 
-LOAD1_process : process( current_state )
-begin
+  LOAD1_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '0';
@@ -265,11 +265,11 @@ begin
     read  <= '1';
     write <= '0';
 
-  
-end process ; -- LOAD1_process
+    
+  end process;  -- LOAD1_process
 
-LOAD2_process : process( current_state )
-begin
+  LOAD2_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '1';
@@ -292,11 +292,11 @@ begin
     read  <= '1';
     write <= '0';
 
-  
-end process ; -- LOAD2_process
+    
+  end process;  -- LOAD2_process
 
-BREAK_process : process( current_state )
-begin
+  BREAK_process : process(current_state)
+  begin
 
     branch_op  <= '0';
     imm_signed <= '0';
@@ -319,80 +319,76 @@ begin
     read  <= '0';
     write <= '0';
 
-  
-end process ; -- BREAK_process
+    
+  end process;  -- BREAK_process
 
 
-sel_state : process( current_state )
-begin
-  case( current_state ) is
-  
-    when FETCH1 => next_state <= FETCH2;
-
-    when FETCH2 => next_state <= DECODE;
-
-    when DECODE =>
-      case(op) is
+  sel_state : process(current_state)
+  begin
+    case(current_state) is
       
-      when "111010" =>          --0X3A
+      when FETCH1 => next_state <= FETCH2;
 
-        case(opx) is
+      when FETCH2 => next_state <= DECODE;
+
+      when DECODE =>
+        case(op) is
           
-          when "110100" =>      --0X34
-            next_state <= BREAK;
+          when "111010" =>              --0X3A
 
+            case(opx) is
+              
+              when "110100" =>          --0X34
+                next_state <= BREAK;
+
+              when others =>
+                next_state <= R_OP;
+                
+            end case;
+
+          when "000100" =>              --0X04
+            next_state <= I_OP;
+
+          when "010111" =>              --0X17
+            next_state <= LOAD1;
+
+          when "010101" =>              --0X15
+            next_state <= STORE;
+            
           when others =>
-            next_state <= R_OP;
+            next_state <= BREAK;
             
         end case;
 
-      when "000100" =>          --0X04
-        next_state <= I_OP;
+      when LOAD1 => next_state <= LOAD2;
 
-      when "010111" =>          --0X17
-        next_state <= LOAD1;
+      when R_OP => next_state <= FETCH1;
 
-      when "010101" =>          --0X15
-        next_state <= STORE;
-        
-      when others =>
-        next_state <= BREAK;
-        
+      when I_OP => next_state <= FETCH1;
+
+      when STORE => next_state <= FETCH1;
+
+      when LOAD2 => next_state <= FETCH1;
+
+      when BREAK => next_state <= BREAK;
+
+      when others => next_state <= BREAK;
+                     
     end case;
 
-    when LOAD1 => next_state <= LOAD2;
-   
-    when R_OP => next_state <= FETCH1;
-   
-    when I_OP => next_state <= FETCH1;
-   
-    when STORE => next_state <= FETCH1;
-   
-    when LOAD2 => next_state <= FETCH1;
+    
+  end process;  -- change_state
 
-    when BREAK => next_state <= BREAK;
- 
-    when others => next_state <= BREAK;
-  
-  end case ;
 
-  
-end process ; -- change_state
+  change_state : process(clk, reset_n)
+  begin
+    if (reset_n = '1') then
+      current_state <= FETCH1;
 
-reset : process(reset_n)
-begin
-  if (reset_n = '1') then
-    current_state <= FETCH1;
-  end if;
-  
-end process;  -- reset
-
-change_state : process( clk )
-begin
-  if (rising_edge(clk)) then
-    current_state <= next_state;
-  end if ;
-end process ; -- change_state
+    elsif (rising_edge(clk)) then
+      current_state <= next_state;
+    end if;
+  end process;  -- change_state
 
 
 
