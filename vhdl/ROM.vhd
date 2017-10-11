@@ -20,7 +20,7 @@ begin
 	ROM_mem : entity work.ROM_Block port map(
 		address => address,
 		clock => clk,
-		q => s_out;
+		q => s_out);
 
 	read_proc : process( clk )
 		begin
