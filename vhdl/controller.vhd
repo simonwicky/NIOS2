@@ -84,278 +84,244 @@ begin
 
   end process;  -- op_alu_sel
 
-  fetch1_proc : process(current_state)
+  out_sel_proc : process(current_state)
   begin
-
-  	if(current_state = FETCH1) then
-	    branch_op  <= '0';
-	    imm_signed <= '0';
-	    ir_en      <= '0';
-
-	    pc_add_imm <= '0';
-	    pc_en      <= '0';
-	    pc_sel_a   <= '0';
-	    pc_sel_imm <= '0';
-
-	    rf_wren <= '0';
-
-	    sel_addr <= '0';
-	    sel_b    <= '0';
-	    sel_mem  <= '0';
-	    sel_pc   <= '0';
-	    sel_ra   <= '0';
-	    sel_rC   <= '0';
-
-	    read  <= '1';
-	    write <= '0';
-	end if;
-	    
-  end process;  -- fetch1_proc
-
-  fetch2_proc : process(current_state)
-  begin
-
-  	if(current_state = FETCH2) then 
-	    branch_op  <= '0';
-	    imm_signed <= '0';
-	    ir_en      <= '1';
-
-	    pc_add_imm <= '0';
-	    pc_en      <= '1';
-	    pc_sel_a   <= '0';
-	    pc_sel_imm <= '0';
-
-	    rf_wren <= '0';
-
-	    sel_addr <= '0';
-	    sel_b    <= '0';
-	    sel_mem  <= '0';
-	    sel_pc   <= '0';
-	    sel_ra   <= '0';
-	    sel_rC   <= '0';
-
-	    read  <= '0';
-	    write <= '0';
-
-	end if;
-    
-  end process;  -- fetch2_proc
-
-  decode_proc : process(current_state)
-  begin
-  
-  	if(current_state = DECODE) then 
-	    branch_op  <= '0';
-	    imm_signed <= '0';
-	    ir_en      <= '1';
-
-	    pc_add_imm <= '0';
-	    pc_en      <= '1';
-	    pc_sel_a   <= '0';
-	    pc_sel_imm <= '0';
-
-	    rf_wren <= '0';
-
-	    sel_addr <= '0';
-	    sel_b    <= '0';
-	    sel_mem  <= '0';
-	    sel_pc   <= '0';
-	    sel_ra   <= '0';
-	    sel_rC   <= '0';
-
-	    read  <= '0';
-	    write <= '0';
-
-	end if;
-    
-  end process;  -- decode_proc
-
-
-  R_OP_process : process(current_state)
-  begin
-    if (current_state = R_OP) then
+    case(current_state) is
       
-      branch_op  <= '0';
-      imm_signed <= '0';
-      ir_en      <= '0';
+      when FETCH1 =>
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
 
-      pc_add_imm <= '0';
-      pc_en      <= '0';
-      pc_sel_a   <= '0';
-      pc_sel_imm <= '0';
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-      rf_wren <= '1';
+        rf_wren <= '0';
 
-      sel_addr <= '0';
-      sel_b    <= '1';
-      sel_mem  <= '0';
-      sel_pc   <= '0';
-      sel_ra   <= '0';
-      sel_rC   <= '1';
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
 
-      read  <= '0';
-      write <= '0';
+        read  <= '1';
+        write <= '0';
 
-    end if;
+      when FETCH2 =>
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '1';
 
-    
-  end process;  -- R_OP_process
+        pc_add_imm <= '0';
+        pc_en      <= '1';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-  I_OP_process : process(current_state)
-  begin
-    if (current_state = I_OP) then
-      
-      branch_op  <= '0';
-      imm_signed <= '1';
-      ir_en      <= '0';
+        rf_wren <= '0';
 
-      pc_add_imm <= '0';
-      pc_en      <= '0';
-      pc_sel_a   <= '0';
-      pc_sel_imm <= '0';
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
 
-      rf_wren <= '1';
+        read  <= '0';
+        write <= '0';
 
-      sel_addr <= '0';
-      sel_b    <= '0';
-      sel_mem  <= '0';
-      sel_pc   <= '0';
-      sel_ra   <= '0';
-      sel_rC   <= '0';
+      when DECODE =>
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '1';
 
-      read  <= '0';
-      write <= '0';
-    end if;
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-    
-  end process;  -- I_OP_process
+        rf_wren <= '0';
 
-  STORE_process : process(current_state)
-  begin
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
 
-    if (current_state = STORE) then
+        read  <= '0';
+        write <= '0';
 
-      branch_op  <= '0';
-      imm_signed <= '1';
-      ir_en      <= '0';
+      when R_OP =>
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
 
-      pc_add_imm <= '0';
-      pc_en      <= '0';
-      pc_sel_a   <= '0';
-      pc_sel_imm <= '0';
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-      rf_wren <= '1';
+        rf_wren <= '1';
 
-      sel_addr <= '1';
-      sel_b    <= '0';
-      sel_mem  <= '0';
-      sel_pc   <= '0';
-      sel_ra   <= '0';
-      sel_rC   <= '0';
+        sel_addr <= '0';
+        sel_b    <= '1';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '1';
 
-      read  <= '0';
-      write <= '1';
+        read  <= '0';
+        write <= '0';
 
-    end if;
+      when I_OP =>
+        branch_op  <= '0';
+        imm_signed <= '1';
+        ir_en      <= '0';
 
-    
-  end process;  -- STORE_process
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-  LOAD1_process : process(current_state)
-  begin
+        rf_wren <= '1';
 
-  if (current_state = LOAD1) then
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '0';
+
+      when STORE =>
+        branch_op  <= '0';
+        imm_signed <= '1';
+        ir_en      <= '0';
+
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '0';
+
+        sel_addr <= '1';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '1';
+
+      when LOAD1 =>
+        branch_op  <= '0';
+        imm_signed <= '1';
+        ir_en      <= '0';
+
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '0';
+
+        sel_addr <= '1';
+        sel_b    <= '0';
+        sel_mem  <= '1';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '1';
+        write <= '0';
+
+      when LOAD2 =>
+
+        branch_op  <= '0';
+        imm_signed <= '1';
+        ir_en      <= '0';
+
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '1';
+
+        sel_addr <= '1';
+        sel_b    <= '0';
+        sel_mem  <= '1';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '1';
+        write <= '0';
+
+      when BREAK =>
+
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
+
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '0';
+
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '0';
 
 
-    branch_op  <= '0';
-    imm_signed <= '0';
-    ir_en      <= '0';
+        
+        
+      when others =>
 
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
 
-    rf_wren <= '1';
+        pc_add_imm <= '0';
+        pc_en      <= '0';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
 
-    sel_addr <= '1';
-    sel_b    <= '0';
-    sel_mem  <= '1';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '0';
+        rf_wren <= '0';
 
-    read  <= '1';
-    write <= '0';
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
 
-  end if;
-
-    
-  end process;  -- LOAD1_process
-
-  LOAD2_process : process(current_state)
-  begin
-
-  if (current_state = LOAD2) then
-    
-
-    branch_op  <= '0';
-    imm_signed <= '1';
-    ir_en      <= '0';
-
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
-
-    rf_wren <= '1';
-
-    sel_addr <= '1';
-    sel_b    <= '0';
-    sel_mem  <= '0';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '0';
-
-    read  <= '1';
-    write <= '0';
-
-  end if;
-
-    
-  end process;  -- LOAD2_process
-
-  BREAK_process : process(current_state)
-  begin
-
-  if (current_state = BREAK) then
+        read  <= '0';
+        write <= '0';
+        
+    end case;
 
 
-    branch_op  <= '0';
-    imm_signed <= '0';
-    ir_en      <= '0';
+  end process;  --out_sel_proc
 
-    pc_add_imm <= '0';
-    pc_en      <= '0';
-    pc_sel_a   <= '0';
-    pc_sel_imm <= '0';
 
-    rf_wren <= '0';
 
-    sel_addr <= '0';
-    sel_b    <= '0';
-    sel_mem  <= '0';
-    sel_pc   <= '0';
-    sel_ra   <= '0';
-    sel_rC   <= '0';
 
-    read  <= '0';
-    write <= '0';
-
-  end if;
-
-    
-  end process;  -- BREAK_process
 
 
   sel_state : process(current_state)
