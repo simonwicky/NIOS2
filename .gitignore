@@ -1,3 +1,6 @@
 quartus/
 modelsim/
 vhdl/work-obj93.cf
+program.asm
+program.asm.bak
+vhdl/.swp
