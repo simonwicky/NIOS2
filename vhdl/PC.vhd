@@ -18,27 +18,26 @@ end PC;
 
 architecture synth of PC is
 
-    signal address : integer;
-  --  signal next_address : integer;
+    signal address : unsigned(15 downto 0) := X"0000";
+    signal next_address : unsigned(15 downto 0) := X"0000";
 
 begin
 
 inc_address : process( clk, reset_n )
 begin
     if (reset_n = '1') then
-        address <= 0;
-       -- next_address <= 0;
-    end if ;
+        address <= X"0000";
+        next_address <= X"0000";
 
-    if rising_edge(clk) then
+    elsif rising_edge(clk) then
         if (en = '1') then
-            address <= address + 4;
-            --next_address <= next_address + 4;
+            next_address <= address + X"0004";
+            address <= next_address;
         end if ;
-    end if ;
+    end if;
 end process ; -- inc_address
 
-addr <= X"0000" & std_logic_vector(to_unsigned(address,16));
+addr <= X"0000" & std_logic_vector(address);
 
 
 end synth;
