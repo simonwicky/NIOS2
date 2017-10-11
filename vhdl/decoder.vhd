@@ -8,6 +8,7 @@ entity decoder is
         cs_LEDS : out std_logic;
         cs_RAM  : out std_logic;
         cs_ROM  : out std_logic
+        cs_buttons : out std_logic;
     );
 end decoder;
 
@@ -18,6 +19,10 @@ architecture synth of decoder is
 	constant b4 : std_logic_vector := X"1FFC";
 	constant b5 : std_logic_vector := X"2000";
 	constant b6 : std_logic_vector := X"200C";
+	constant b7 : std_logic_vector := X"2030";
+	constant b8 : std_logic_vector := X"2034";
+
+
 
 
 begin
@@ -29,22 +34,32 @@ begin
 			
 			cs_RAM <= '0';
 			cs_LEDS <= '0';
+			cs_buttons <= '0';
 			cs_ROM <= '1';
 
 			
 		elsif((unsigned(address) >= unsigned(b3)) and (unsigned(address) <= unsigned(b4))) then
 			cs_ROM <= '0';
 			cs_LEDS <= '0';
+			cs_buttons <= '0';
 			cs_RAM <= '1';
 
 		elsif((unsigned(address) >= unsigned(b5)) and (unsigned(address) <= unsigned(b6))) then
 			cs_RAM <= '0';
 			cs_ROM <= '0';
+			cs_buttons <= '0';
 			cs_LEDS <= '1';
+
+		elsif ((unsigned(address) >= unsigned(b7)) and (unsigned(address) <= unsigned(b8))) then
+			cs_RAM <= '0';
+			cs_ROM <= '0';
+			cs_LEDS <= '0';
+			cs_buttons <= '1';
 		else
 			cs_RAM <= '0';
 			cs_ROM <= '0';
 			cs_LEDS <= '0';
+			cs_buttons <= '0';
 
 		end if;
 
