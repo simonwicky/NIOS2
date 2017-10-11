@@ -37,6 +37,12 @@ entity controller is
 end controller;
 
 architecture synth of controller is
+
+	type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE,BREAK,LOAD1,I_OP,LOAD2);
+
+	signal current_state : state_type;
+	signal next_state : state_type;
+
 begin
 
 
@@ -47,37 +53,51 @@ begin
 	
 	case( op ) is
 	
-		when X"3A" =>
+		when "111010" =>
 
 			case( opx ) is
 			
-				when X"0E" =>
+				when "001110" =>
 					op_alu <= "100001";
 
-				when X"1B" =>
+				when "011011" =>
 					op_alu <= "110011";
 
-				when X"34" =>
-				 --break
-								
 				when others =>
+					op_alu <= "000000";
 			
 			end case ;
 
-		when X"04" =>
+		when "000100" =>
 			op_alu <= "000000";
 
-		when X"17" =>
+		when "010111" =>
 			op_alu <= "000000";
 
-		when X"15" =>
+		when "010101" =>
 			op_alu <= "000000";
-			
-	
+				
 		when others =>
+			op_alu <= "000000";
 	
 	end case ;
 
 end process ; -- op_alu_sel
+
+
+reset : process( reset_n )
+begin
+	if (reset_n = '1')  then
+		current_state <= FETCH1;
+	end if ;
+	
+end process ; -- reset
+
+
+
+
+
+
+
 
 end synth;
