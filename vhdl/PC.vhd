@@ -19,20 +19,21 @@ end PC;
 architecture synth of PC is
 
     signal address : integer;
-    signal next_address : integer;
+  --  signal next_address : integer;
 
 begin
 
 inc_address : process( clk, reset_n )
 begin
     if (reset_n = '1') then
-        next_address <= 0;
+        address <= 0;
+       -- next_address <= 0;
     end if ;
 
     if rising_edge(clk) then
         if (en = '1') then
-            address <= next_address;
-            next_address <= next_address + 4;
+            address <= address + 4;
+            --next_address <= next_address + 4;
         end if ;
     end if ;
 end process ; -- inc_address
