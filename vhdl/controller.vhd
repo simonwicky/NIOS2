@@ -372,7 +372,7 @@ begin
 
     when BREAK => next_state <= BREAK;
  
-    when others => BREAK;
+    when others => next_state <= BREAK;
   
   end case ;
 
