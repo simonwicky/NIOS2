@@ -38,4 +38,46 @@ end controller;
 
 architecture synth of controller is
 begin
+
+
+
+
+op_alu_sel : process( op,opx )
+begin
+	
+	case( op ) is
+	
+		when X"3A" =>
+
+			case( opx ) is
+			
+				when X"0E" =>
+					op_alu <= "100001";
+
+				when X"1B" =>
+					op_alu <= "110011";
+
+				when X"34" =>
+				 --break
+								
+				when others =>
+			
+			end case ;
+
+		when X"04" =>
+			op_alu <= "000000";
+
+		when X"17" =>
+			op_alu <= "000000";
+
+		when X"15" =>
+			op_alu <= "000000";
+			
+	
+		when others =>
+	
+	end case ;
+
+end process ; -- op_alu_sel
+
 end synth;
