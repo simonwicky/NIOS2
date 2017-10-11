@@ -53,14 +53,14 @@ begin
 		
 	end process ; -- enable_clk
 
-	read : process( enable_read, s_address, RAM_mem )
+	read_proc : process( enable_read, s_address, RAM_mem )
 	begin
-		rddata <= others => 'Z';
+		rddata <= (others => 'Z');
 		if(enable_read = '1') then
 			rddata <= RAM_mem(to_integer(unsigned(s_address)));
 		end if;
 		
-	end process ; -- read
+	end process ; -- read_proc
 
 
 
