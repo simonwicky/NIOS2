@@ -38,7 +38,7 @@ end controller;
 
 architecture synth of controller is
 
-  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2);
+  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2,BRANCH);
 
   signal current_state : state_type;
   signal next_state    : state_type;
@@ -76,6 +76,24 @@ begin
 
       when "010101" =>
         op_alu <= "000000";
+
+      when "001110" =>          --0x0E
+        op_alu <= "011001";
+
+      when "010110" =>          --0x16
+        op_alu <= "011010";
+
+      when "011110" =>          --0x1E
+        op_alu <= "011011";
+
+      when "100110" =>          --0x26
+        op_alu <= "011100";
+
+      when "101110" =>          --0x2E
+        op_alu <= "011101";
+
+      when "110110" =>          --0x36
+        op_alu <= "011110";
         
       when others =>
         op_alu <= "000000";
@@ -265,6 +283,29 @@ begin
         read  <= '1';
         write <= '0';
 
+      when BRANCH =>
+
+        branch_op  <= '1';
+        imm_signed <= '1';
+        ir_en      <= '0';
+
+        pc_add_imm <= '1';
+        pc_en      <= '1';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '0';
+
+        sel_addr <= '0';
+        sel_b    <= '1';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '0';
+
       when BREAK =>
 
         branch_op  <= '0';
@@ -355,6 +396,27 @@ begin
 
           when "010101" =>              --0X15
             next_state <= STORE;
+
+          when "000110" =>          --0x06
+            next_state <= BRANCH;
+
+          when "001110" =>          --0x0E
+            next_state <= BRANCH;
+
+          when "010110" =>          --0x16
+            next_state <= BRANCH;
+
+          when "011110" =>          --0x1E
+            next_state <= BRANCH;
+
+          when "100110" =>          --0x26
+            next_state <= BRANCH;
+
+         when "101110" =>          --0x2E
+            next_state <= BRANCH;
+
+          when "110110" =>          --0x36
+            next_state <= BRANCH;
             
           when others =>
             next_state <= BREAK;
