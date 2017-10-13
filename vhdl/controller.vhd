@@ -38,7 +38,7 @@ end controller;
 
 architecture synth of controller is
 
-  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2,BRANCH);
+  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2,BRANCH,CALL);
 
   signal current_state : state_type;
   signal next_state    : state_type;
@@ -290,7 +290,7 @@ begin
         ir_en      <= '0';
 
         pc_add_imm <= '1';
-        pc_en      <= '1';
+        pc_en      <= '0';
         pc_sel_a   <= '0';
         pc_sel_imm <= '0';
 
@@ -301,6 +301,29 @@ begin
         sel_mem  <= '0';
         sel_pc   <= '0';
         sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '0';
+
+      when CALL =>
+
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
+
+        pc_add_imm <= '1';
+        pc_en      <= '1';
+        pc_sel_a   <= '0';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '1';
+
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '1';
+        sel_ra   <= '1';
         sel_rC   <= '0';
 
         read  <= '0';
@@ -417,6 +440,9 @@ begin
 
           when "110110" =>          --0x36
             next_state <= BRANCH;
+
+          when "00000" =>           --0x00
+            next_state <= CALL;
             
           when others =>
             next_state <= BREAK;
