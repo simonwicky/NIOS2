@@ -38,7 +38,7 @@ end controller;
 
 architecture synth of controller is
 
-  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2,BRANCH,CALL);
+  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2,BRANCH,CALL, JUMP);
 
   signal current_state : state_type;
   signal next_state    : state_type;
