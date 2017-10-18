@@ -27,23 +27,28 @@ inc_address : process( clk, reset_n )
 begin
     if (reset_n = '0') then
         address <= X"0000";
-        next_address <= X"0000";
+        
 
     elsif rising_edge(clk) then
         if (en = '1') then
-            if (add_imm = '1') then
-                next_address <= address + signed(imm);
-            elsif (sel_imm = '1') then
-                next_address <= signed(imm(13 downto 0) & "00");
-            elsif (sel_a = '1') then
-                next_address <= signed(a);                
-            else
-                next_address <= address + X"0004";    
-            end if ;
+            
             address <= next_address;
         end if ;
     end if;
 end process ; -- inc_address
+
+transition : process( add_imm, sel_imm, sel_a, address )
+begin
+    if (add_imm = '1') then
+        next_address <= address + signed(imm);
+    elsif (sel_imm = '1') then
+        next_address <= signed(imm(13 downto 0) & "00");
+    elsif (sel_a = '1') then
+        next_address <= signed(a);                
+    else
+        next_address <= address + X"0004";    
+    end if ;
+end process ; -- transition
 
 addr <= X"0000" & std_logic_vector(address);
 
