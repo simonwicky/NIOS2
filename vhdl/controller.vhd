@@ -114,6 +114,15 @@ begin
       when "010101" =>            --0x15
         op_alu <= "000000";
 
+      when "001100" =>            --0x0C
+        op_alu <= "100001";
+
+      when "010100" =>            --0x14
+        op_alu <= "100010";
+
+      when "011100" =>            --0x1C
+        op_alu <= "100011";
+
       -- branch conditions
 
       when "000110" =>        --0x06 branch without condition
@@ -497,6 +506,15 @@ begin
           when "000100" =>              --0X04
             next_state <= I_OP;
 
+          when "001100" =>            --0x0C
+            next_state <= UI_OP;
+
+          when "010100" =>            --0x14
+            next_state <= UI_OP;
+
+          when "011100" =>            --0x1C
+            next_state <= UI_OP;
+
           when "010111" =>              --0X17
             next_state <= LOAD1;
 
@@ -549,6 +567,8 @@ begin
       when JUMP => next_state <= FETCH1;
 
       when RI_OP => next_state <= FETCH1;
+
+      when UI_OP => next_state <= FETCH1;
 
 
       when BREAK => next_state <= BREAK;
