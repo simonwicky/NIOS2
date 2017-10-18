@@ -13,11 +13,19 @@ end ROM;
 
 architecture synth of ROM is
 
+	component ROM_block is
+        port(
+            address : in std_logic_vector(9 downto 0);
+            clock : in std_logic := '1';
+            q : out std_logic_vector(31 downto 0)
+            );
+    end component ROM_block;
+
 	signal s_out : std_logic_vector(31 downto 0) := (others => '0');
 
 begin
 	
-	ROM_mem : entity work.ROM_Block port map(
+	ROM_mem : ROM_Block port map(
 		address => address,
 		clock => clk,
 		q => s_out);
