@@ -512,7 +512,7 @@ begin
 
 
 
-  sel_state : process(current_state)
+  sel_state : process(current_state, clk, op, opx)
   begin
     case(current_state) is
       
