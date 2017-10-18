@@ -31,11 +31,13 @@ begin
 
     elsif rising_edge(clk) then
         if (en = '1') then
-            --if (add_imm = '1') then
-            --    next_address <= address + X"0004" + unsigned(imm);
-            --else
+            if (add_imm = '1') then
+                next_address <= address + signed(imm);
+            elsif (sel_imm = '1') then
+                next_address <= signed(imm(13 downto 0) + "00");                
+            else
                 next_address <= address + X"0004";    
-            --end if ;
+            end if ;
             address <= next_address;
         end if ;
     end if;
