@@ -31,11 +31,11 @@ begin
 
     elsif rising_edge(clk) then
         if (en = '1') then
-            if (add_imm = '1') then
-                next_address <= address + X"0004" + unsigned(imm);
-            else
+            --if (add_imm = '1') then
+            --    next_address <= address + X"0004" + unsigned(imm);
+            --else
                 next_address <= address + X"0004";    
-            end if ;
+            --end if ;
             address <= next_address;
         end if ;
     end if;
