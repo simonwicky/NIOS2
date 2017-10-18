@@ -260,7 +260,7 @@ begin
         rf_wren <= '1';
 
         sel_addr <= '0';
-        sel_b    <= '1';
+        sel_b    <= '0';    -- to take the immediate value
         sel_mem  <= '0';
         sel_pc   <= '0';
         sel_ra   <= '0';
