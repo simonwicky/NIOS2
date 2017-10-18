@@ -25,7 +25,7 @@ begin
 
 inc_address : process( clk, reset_n )
 begin
-    if (reset_n = '1') then
+    if (reset_n = '0') then
         address <= X"0000";
         next_address <= X"0000";
 
