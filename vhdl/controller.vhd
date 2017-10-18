@@ -206,7 +206,7 @@ begin
       when DECODE =>
         branch_op  <= '0';
         imm_signed <= '0';
-        ir_en      <= '1';
+        ir_en      <= '0';
 
         pc_add_imm <= '0';
         pc_en      <= '0';
