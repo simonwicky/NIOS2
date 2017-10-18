@@ -80,7 +80,7 @@ begin
       -- branch conditions
 
       when "000110" =>        --0x06 branch without condition
-        op_alu <= "0011100";
+        op_alu <= "011100";
 
       when "001110" =>          --0x0E
         op_alu <= "011001";
@@ -336,6 +336,30 @@ begin
         read  <= '0';
         write <= '0';
 
+      when JUMP =>
+
+        branch_op  <= '0';
+        imm_signed <= '0';
+        ir_en      <= '0';
+
+        pc_add_imm <= '0';
+        pc_en      <= '1';
+        pc_sel_a   <= '1';
+        pc_sel_imm <= '0';
+
+        rf_wren <= '0';
+
+        sel_addr <= '0';
+        sel_b    <= '0';
+        sel_mem  <= '0';
+        sel_pc   <= '0';
+        sel_ra   <= '0';
+        sel_rC   <= '0';
+
+        read  <= '0';
+        write <= '0';
+
+
       when BREAK =>
 
         branch_op  <= '0';
@@ -412,6 +436,12 @@ begin
               
               when "110100" =>          --0X34
                 next_state <= BREAK;
+
+              when "000101" =>           --0x05
+                next_state <= JUMP;
+
+              when "001101" =>           --0x0D
+                next_state <= JUMP;
 
               when others =>
                 next_state <= R_OP;

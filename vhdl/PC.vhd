@@ -18,8 +18,8 @@ end PC;
 
 architecture synth of PC is
 
-    signal address : unsigned(15 downto 0) := X"0000";
-    signal next_address : unsigned(15 downto 0) := X"0000";
+    signal address : signed(15 downto 0) := X"0000";
+    signal next_address : signed(15 downto 0) := X"0000";
 
 begin
 
@@ -34,7 +34,9 @@ begin
             if (add_imm = '1') then
                 next_address <= address + signed(imm);
             elsif (sel_imm = '1') then
-                next_address <= signed(imm(13 downto 0) + "00");                
+                next_address <= signed(imm(13 downto 0) & "00");
+            elsif (sel_a = '1') then
+                next_address <= signed(a);                
             else
                 next_address <= address + X"0004";    
             end if ;
