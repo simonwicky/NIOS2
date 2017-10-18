@@ -38,7 +38,7 @@ end controller;
 
 architecture synth of controller is
 
-  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2, BRANCH, CALL, JUMP);
+  type state_type is (FETCH1, FETCH2, DECODE, R_OP, STORE, BREAK, LOAD1, I_OP, LOAD2, BRANCH, CALL, JUMP,RI_OP);
 
   signal current_state : state_type;
   signal next_state    : state_type;
@@ -57,11 +57,48 @@ begin
 
         case(opx) is
           
-          when "001110" =>        --0x0E
-            op_alu <= "100001";
+          when "110001" =>        --0x31
+            op_alu <= "000" & opx(5 downto 3);
 
-          when "011011" =>        --0x1B
-            op_alu <= "110011";
+          when "111001" =>        --0x39
+            op_alu <= "001" & opx(5 downto 3);
+
+          when "001000" =>        --0x08
+            op_alu <= "011" & opx(5 downto 3);
+
+          when "010000" =>        --0x10
+            op_alu <= "011" & opx(5 downto 3);
+
+          when "000110" =>        --0x06 
+            op_alu <= "100" & opx(5 downto 3);
+
+          when "001110" =>          --0x0E
+            op_alu <= "100" & opx(5 downto 3);
+
+          when "010110" =>          --0x16
+            op_alu <= "100" & opx(5 downto 3);
+
+          when "011110" =>          --0x1E
+            op_alu <= "100" & opx(5 downto 3);
+
+          when "010011" =>          --0x13
+            op_alu <= "110" & opx(5 downto 3);
+
+          when "011011" =>          --0x1B
+            op_alu <= "110" & opx(5 downto 3);
+
+          when "111011" =>          --0x3B
+            op_alu <= "110" & opx(5 downto 3);
+
+          when "010010" =>          --0x12
+            op_alu <= "110" & opx(5 downto 3);
+
+          when "011010" =>          --0x1A
+            op_alu <= "110" & opx(5 downto 3);
+
+          when "111010" =>          --0x3A
+            op_alu <= "110" & opx(5 downto 3);
+
 
           when others =>
             op_alu <= "000000";
@@ -443,6 +480,15 @@ begin
               when "001101" =>           --0x0D
                 next_state <= JUMP;
 
+              when "010010" =>            --0x12
+                next_state <= RI_OP;
+
+              when "011010" =>            --0x1A
+                next_state <= RI_OP;
+
+              when "111010" =>            --0x3A
+                next_state <= RI_OP;
+
               when others =>
                 next_state <= R_OP;
                 
@@ -495,6 +541,15 @@ begin
       when STORE => next_state <= FETCH1;
 
       when LOAD2 => next_state <= FETCH1;
+
+      when BRANCH => next_state <= FETCH1;
+
+      when CALL => next_state <= FETCH1;
+
+      when JUMP => next_state <= FETCH1;
+
+      when RI_OP => next_state <= FETCH1;
+
 
       when BREAK => next_state <= BREAK;
 
