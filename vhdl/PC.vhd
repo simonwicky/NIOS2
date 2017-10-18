@@ -27,11 +27,9 @@ inc_address : process( clk, reset_n )
 begin
     if (reset_n = '0') then
         address <= X"0000";
-        
 
     elsif rising_edge(clk) then
         if (en = '1') then
-            
             address <= next_address;
         end if ;
     end if;
