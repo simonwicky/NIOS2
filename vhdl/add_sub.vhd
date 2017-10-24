@@ -45,7 +45,7 @@ begin
 	
 	
 
-	zero <= '1' when s_r = zero_VAL else '0';
+	zero <= '1' when s_r(31 downto 0) = zero_VAL else '0';
 
 
 
