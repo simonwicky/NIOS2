@@ -38,16 +38,20 @@ end process ; -- inc_address
 transition : process( add_imm, sel_imm, sel_a, address )
 begin
     if (add_imm = '1') then
+        --critical point if imm is not a multiple of 4. Modify imm?
         next_address <= address + signed(imm);
     elsif (sel_imm = '1') then
+        -- shoudl be ok but doesn't pass the test. Maybe problem in the if order?
         next_address <= signed(imm(13 downto 0) & "00");
     elsif (sel_a = '1') then
+        --critical if a not multiple of 4
         next_address <= signed(a);                
     else
         next_address <= address + X"0004";    
     end if ;
 end process ; -- transition
 
+--problem in the test, weird, maybe bc the point above
 addr <= X"0000" & std_logic_vector(address);
 
 
