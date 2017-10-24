@@ -30,6 +30,7 @@ begin
 
     elsif rising_edge(clk) then
         if (en = '1') then
+        --pc is synchronous
             address <= next_address;
         end if ;
     end if;
