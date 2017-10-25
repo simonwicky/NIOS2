@@ -53,7 +53,7 @@ begin
 end process ; -- transition
 
 --problem in the test, weird, maybe bc the point above
-addr <= X"0000" & std_logic_vector(address);
+addr <= X"0000" & (std_logic_vector(address) and (X"FFF" & "1100"));
 
 
 end synth;
