@@ -26,8 +26,6 @@ architecture synth of add_sub is
 
 begin
 
-	zero_VAL <= (others => '0');
-
 	s_sub_mode_vec <= (others => sub_mode);
 	sub_mode_vec_val <= (32 downto 1 => '0') & sub_mode;
 	
@@ -45,7 +43,7 @@ begin
 	
 	
 
-	zero <= '1' when s_r(31 downto 0) = zero_VAL else '0';
+	zero <= '1' when s_r(31 downto 0) = X"00000000" else '0';
 
 
 
