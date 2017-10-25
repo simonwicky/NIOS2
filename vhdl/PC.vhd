@@ -18,8 +18,7 @@ end PC;
 
 architecture synth of PC is
 
-  signal address      : signed(15 downto 0) := X"0000";
-  signal next_address : signed(15 downto 0) := X"0000";
+  signal address      : signed(15 downto 0);
 
 begin
 
