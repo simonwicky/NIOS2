@@ -17,10 +17,7 @@ architecture synth of add_sub is
 
 	signal s_b_33 : std_logic_vector(32 downto 0);
 	signal s_a_33 : std_logic_vector(32 downto 0);
-	signal zero_VAL : std_logic_vector(32 downto 0);
-	signal sub_mode_vec_val : std_logic_vector(32 downto 0);
-	
-	
+	signal sub_mode_vec_val : std_logic_vector(32 downto 0);	
 	signal s_sub_mode_vec : std_logic_vector(31 downto 0);
 	signal s_r : std_logic_vector(32 downto 0);
 
