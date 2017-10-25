@@ -41,7 +41,7 @@ begin
 	s_a_33 <= '0' & a;
 
 
-	s_r <= std_logic_vector(signed(s_a_33) + signed(s_b_33) + signed(sub_mode_vec_val));
+	s_r <= std_logic_vector(unsigned(s_a_33) + unsigned(s_b_33) + unsigned(sub_mode_vec_val));
 	
 	
 
