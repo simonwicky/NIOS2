@@ -37,7 +37,7 @@ begin
     process
     begin
         reset_n <= '0';
-        wait for CLK_PERIOD / 2;
+        wait for 3*CLK_PERIOD / 2;
         reset_n <= '1';
         wait;
     end process;
